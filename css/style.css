@@ -1,15 +1,5 @@
-ul{
-list-style: none;
+.currency_select{
+    width: 300px;
 }
 
 
-.colsWrapNew {
-    padding-top: 17px;
-    display: block;
-}
-
-.colsWrapNew li {
-    display: inline-block;
-    width: 156px;
-    margin: 6px 0 0;
-}

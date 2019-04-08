@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "Investing Live Currencies",
-  "description": "See live currencies from investing.com and get notified.",
+  "description": "See any currencies from investing.com",
   "version": "1.0",
 
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
