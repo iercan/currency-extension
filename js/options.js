@@ -25,15 +25,23 @@ function restore_options() {
   chrome.storage.sync.get({
     selectedCurrencies: ["1","2","6"]
   }, function(items) {
-//    document.getElementById('color').value = items.favoriteColor;
-  //  document.getElementById('like').checked = items.likesColor;
+       $("li input").each(function(){
+            if(items.selectedCurrencies.includes(this.id)){
+                $(this).attr("checked", "checked");
+            }
+       });
   });
 }
 
 function filter_currency(){
     var search_val = $("#filter_currency").val().toUpperCase();
     var cur_val = "";
-    
+   
+    if (search_val.length < 3){
+        $("ul li").show();
+        return;
+    }
+
     $("ul li").each(function(){
         cur_val = $(this).attr("title");
         if (cur_val.includes(search_val)){
@@ -46,6 +54,19 @@ function filter_currency(){
     });
 }
 
+function show_selected(){
+    $("ul li").each(function(){
+        if ($(this).find("input[type=checkbox]").checked){
+            $(this).show();
+        }
+        else{
+            $(this).hide();
+        }
+    });
+
+}
+
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById('save').addEventListener('click', save_options);
+document.getElementById('show_selected').addEventListener('click', show_selected);
 document.getElementById('filter_currency').onkeyup=filter_currency;
