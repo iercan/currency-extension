@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+
+  "name": "Investing Live Currencies",
+  "description": "See live currencies from investing.com and get notified.",
+  "version": "1.0",
+
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
+
+
+  "browser_action":{
+    "default_icon": "css/images/favicon.png",
+    "default_title": "Investing Live Currencies",
+    "default_popup": "main.html"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "options_page": "options.html",
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": false
+  },
+  "homepage_url": "https://www.investing.com"
+}
