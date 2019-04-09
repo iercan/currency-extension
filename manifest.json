@@ -1,9 +1,10 @@
 {
   "manifest_version": 2,
 
-  "name": "Investing Live Currencies",
-  "description": "See any currencies from investing.com",
-  "version": "1.0",
+  "name": "investing.com Currencies",
+  "short_name": "investing.com",
+  "description": "See any currencies live from investing.com",
+  "version": "1.2",
 
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
 
