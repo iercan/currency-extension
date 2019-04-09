@@ -7,7 +7,10 @@ chrome.storage.sync.get({
     $("#mainframe").attr("height", hg);
     setTimeout(function(){
         $("#mainframe").attr("src", url + items.selectedCurrencies.join(","));
+    },300);
+    setTimeout(function(){
         $("#processing").hide();
-    },200);
+    },1000);
 });
+
 
