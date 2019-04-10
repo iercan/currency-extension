@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', function(){
         $("#mainframe").attr("height", hg);
         setTimeout(function(){
             $("#mainframe").attr("src", url + items.selectedCurrencies.join(","));
-        },300);
+        },1000);
         setTimeout(function(){
             $("#processing").hide();
-        },1000);
+        },1200);
     });
 });
 
