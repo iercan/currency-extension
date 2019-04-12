@@ -19,7 +19,8 @@
       "default_popup": "main.html"
   },
   "permissions": [
-      "storage"
+      "storage",
+      "notifications"
   ],
   "options_page": "options.html",
   "background": {
