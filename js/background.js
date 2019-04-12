@@ -70,7 +70,7 @@ function check_rates() {
 //check rates in every 5 min
 setInterval(function () {
     check_rates();
-}, 1000 * 5 * 60);
+}, 1000 * 30);
 
 //chrome.browserAction.onClicked.addListener(function(tab) {
 //   chrome.tabs.create({ url: "/main.html" });
