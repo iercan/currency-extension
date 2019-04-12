@@ -3,8 +3,8 @@
 
   "name": "investing.com Currencies",
   "short_name": "investing.com",
-  "description": "See any currencies live from investing.com",
-  "version": "1.11",
+  "description": "See any currencies live from investing.com and get notified",
+  "version": "1.12",
 
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
   "icons": {
@@ -20,11 +20,12 @@
   },
   "permissions": [
       "storage",
-      "notifications"
+      "notifications",
+      "https://www.widgets.investing.com/"
   ],
   "options_page": "options.html",
   "background": {
-      "scripts": ["js/background.js"],
+      "scripts": ["js/jquery-3.2.1.min.js","js/background.js"],
       "persistent": false
   },
   "homepage_url": "https://chrome.google.com/webstore/detail/investingcom-currencies/iomjnncncpafccgaablgejamkpplgflo"
