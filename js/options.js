@@ -17,7 +17,7 @@ function save_options() {
 
     status.text('Options saved. Window will be closed.');
     setTimeout(function() {
-      //window.close();
+      window.close();
     }, 4000);
 
   });
