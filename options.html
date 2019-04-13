@@ -9,13 +9,14 @@
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
-<form class="mt-lg-5">
+<form class="mt-sm-5">
 
 
-    <div class="col-md-4 offset-md-4 ">
+    <div class="m-lg ">
         <div class="form-group row">
-            <label class="col-md-6 mt-2 font-weight-bold">Currencies</label>
-            <select class="form-control currency_select col-md-6" id="currency_select" multiple="multiple">
+            <label class="col-md-5 mt-2 font-weight-bold text-right">Currencies</label>
+            <div class="col-md-3">
+                <select class="form-control currency_select" id="currency_select" multiple="multiple">
                 <option value="1">EUR/USD</option>
                 <option value="3">USD/JPY</option>
                 <option value="2">GBP/USD</option>
@@ -2064,24 +2065,27 @@
                 <option value="10445">ZAR/XOF</option>
                 <option value="1089838">ZARRUBFIX=</option>
             </select>
+            </div>
+
         </div>
         <div class="form-group row">
-            <label class="col-md-6 mt-2 font-weight-bold" for="enable_notification">Notifications</label>
-            <input type="checkbox" id="enable_notification" data-toggle="toggle" class="col-md-6 form-control"/>
+            <label class="col-md-5 text-right mt-2 font-weight-bold" for="enable_notification">Notifications</label>
+            <div class="col-md-6">
+                <input type="checkbox" id="enable_notification" data-toggle="toggle" class=" form-control"/>
+</div>
         </div>
         <div class="form-group row ">
-            <label class="col-md-6 mt-2 font-weight-bold" for="notification_threshold">Notification Threshold (%)</label>
-            <div class="col-md-6 p-0">
-                <input type="text" id="notification_threshold" placeholder="0-10" data-toggle="toggle"
+            <label class="col-md-5 text-right mt-2 font-weight-bold" for="notification_threshold">Notification Threshold (%)</label>
+            <div class="col-md-2">
+                <input type="text" id="notification_threshold" title="Notification will be shown if a rate change above this percentage" placeholder="0-10" data-toggle="toggle"
                        class="form-control"/>
-                <small class="form-text text-muted">Notification will be shown if a rate change above this percentage
                 </small>
             </div>
         </div>
-        <div class="form-group row">
-            <button id="save" type="button" class="col-md-2 offset-md-5 btn btn-primary">Save</button>
+        <div class="form-group text-center">
+            <button id="save" type="button" class=" btn btn-primary">Save</button>
         </div>
-        <div class="form-group row align-items-center">
+        <div class="form-group row align-content-center">
             <span class="text-center col" id="status"></span>
         </div>
     </div>
