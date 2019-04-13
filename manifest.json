@@ -4,7 +4,7 @@
   "name": "investing.com Currencies",
   "short_name": "investing.com",
   "description": "See any currencies live from investing.com and get notified",
-  "version": "1.14",
+  "version": "1.15",
 
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
   "icons": {
@@ -25,8 +25,7 @@
   ],
   "options_page": "options.html",
   "background": {
-      "scripts": ["js/jquery-3.2.1.min.js","js/background.js"],
-      "persistent": false
+      "scripts": ["js/jquery-3.2.1.min.js","js/background.js"]
   },
   "homepage_url": "https://chrome.google.com/webstore/detail/investingcom-currencies/iomjnncncpafccgaablgejamkpplgflo"
 }
