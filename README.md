@@ -1,3 +1,3 @@
-Ekşir is a chrome extension allows you read titles as live flowing. 
+This extension shows currencies from investing.com and send changes as notifications.
 
-[Ekşir](https://chrome.google.com/webstore/detail/ek%C5%9Fir/gehalpinjncgookljbhlcafbcpdkbnmm)
+[Get extension from here](https://chrome.google.com/webstore/detail/investingcom-currencies/iomjnncncpafccgaablgejamkpplgflo)
