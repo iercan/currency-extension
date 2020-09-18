@@ -1,12 +1,16 @@
 
 document.addEventListener('DOMContentLoaded', function(){
 
-    var url='https://www.widgets.investing.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
+
 
     setTimeout(function(){
         chrome.storage.sync.get({
-            selectedCurrencies: ["1","2","6"]
+            selectedCurrencies: ["1","2","6"],
+            language: "www"
         }, function(items) {
+            console.log(url);
+            console.log(items);
+            var url='https://'+items.language+'.widgets.investing.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
             $("#mainframe").attr("src", url + items.selectedCurrencies.join(","));
             var hg = String(items.selectedCurrencies.length * 58 + 60);
             $("#mainframe").attr("height", hg);

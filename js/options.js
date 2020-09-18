@@ -1,6 +1,7 @@
 // Saves options to chrome.storage
 function save_options() {
-  var curlist = $(".currency_select").select2("val");
+  var curlist = $("#currency_select").select2("val");
+  var language = $("#language").select2("val");
   var enable_not =  $("#enable_notification").prop("checked");
   var threshold =  parseFloat($("#notification_threshold").val());
   var status = $('#status');
@@ -11,7 +12,8 @@ function save_options() {
   chrome.storage.sync.set({
     selectedCurrencies: curlist,
     enableNotification: enable_not,
-    notificationThreshold: threshold
+    notificationThreshold: threshold,
+    language: language
   }, function() {
     // Update status to let user know options were saved.
 
@@ -29,10 +31,13 @@ function restore_options() {
   chrome.storage.sync.get({
     selectedCurrencies: ["1","2","6"],
     enableNotification: true,
-    notificationThreshold: 0.5
+    notificationThreshold: 0.5,
+    language: "www"
   }, function(items) {
-      $('.currency_select').val(items.selectedCurrencies);
-      $('.currency_select').trigger('change');
+      $('#currency_select').val(items.selectedCurrencies);
+      $('#currency_select').trigger('change');
+      $('#language').val(items.language);
+      $('#language').trigger('change');
       if (items.enableNotification){
         $("#enable_notification").bootstrapToggle('on');
       }
@@ -42,7 +47,11 @@ function restore_options() {
       $("#notification_threshold").val(items.notificationThreshold);
   });
 }
-$('.currency_select').select2();
+$('#currency_select').select2();
+$('#language').select2({
+        minimumResultsForSearch: -1
+    }
+);
 
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById('save').addEventListener('click', save_options);
