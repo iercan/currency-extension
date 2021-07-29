@@ -1,6 +1,7 @@
 // Saves options to chrome.storage
 function save_options() {
   var curlist = $("#currency_select").select2("val");
+  var crypto_curlist = $("#crypto_currency_select").select2("val");
   var language = $("#language").select2("val");
   var enable_not =  $("#enable_notification").prop("checked");
   var threshold =  parseFloat($("#notification_threshold").val());
@@ -11,6 +12,7 @@ function save_options() {
   }
   chrome.storage.sync.set({
     selectedCurrencies: curlist,
+    selectedCryptoCurrencies: crypto_curlist,
     enableNotification: enable_not,
     notificationThreshold: threshold,
     language: language
@@ -30,12 +32,15 @@ function save_options() {
 function restore_options() {
   chrome.storage.sync.get({
     selectedCurrencies: ["1","2","6"],
+    selectedCryptoCurrencies: ["945629","1058142", "1158819"],
     enableNotification: true,
     notificationThreshold: 0.5,
     language: "www"
   }, function(items) {
       $('#currency_select').val(items.selectedCurrencies);
+      $('#crypto_currency_select').val(items.selectedCryptoCurrencies);
       $('#currency_select').trigger('change');
+      $('#crypto_currency_select').trigger('change');
       $('#language').val(items.language);
       $('#language').trigger('change');
       if (items.enableNotification){
@@ -48,6 +53,7 @@ function restore_options() {
   });
 }
 $('#currency_select').select2();
+$('#crypto_currency_select').select2();
 $('#language').select2({
         minimumResultsForSearch: -1
     }
