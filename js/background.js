@@ -14,9 +14,9 @@ setTimeout(function(){
 },2000);*/
 var notification_levels = {};
 var url = 'https://www.widgets.investing.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
-var crypto_url='https://www.widgets.investing.com/crypto-currency-rates?theme=darkTheme&hideTitle=true&pairs=';
+var crypto_url = 'https://www.widgets.investing.com/crypto-currency-rates?theme=darkTheme&hideTitle=true&pairs=';
 
-function parse_widget(data, selected_currencies, notification_threshold){
+function parse_widget(data, selected_currencies, notification_threshold) {
     var notify = false;
     var messages = [];
     var html = $.parseHTML(data);
@@ -58,19 +58,20 @@ function parse_widget(data, selected_currencies, notification_threshold){
 function check_rates() {
     chrome.storage.sync.get({
         selectedCurrencies: ["1", "2", "6"],
-        selectedCryptoCurrencies: ["945629","1058142", "1158819"],
+        selectedCryptoCurrencies: ["945629", "1058142", "1158819"],
         enableNotification: true,
-        notificationThreshold: 0.5
+        notificationThreshold: 0.5,
+        notificationThresholdCrypto: 5
     }, function (items) {
         if (!items.enableNotification) {
             return;
         } else {
 
-            $.get(url + items.selectedCurrencies.join(","), function(data){
+            $.get(url + items.selectedCurrencies.join(","), function (data) {
                 parse_widget(data, items.selectedCurrencies, items.notificationThreshold)
             });
-            $.get(crypto_url + items.selectedCryptoCurrencies.join(","), function(data){
-                parse_widget(data, items.selectedCryptoCurrencies, items.notificationThreshold)
+            $.get(crypto_url + items.selectedCryptoCurrencies.join(","), function (data) {
+                parse_widget(data, items.selectedCryptoCurrencies, items.notificationThresholdCrypto)
             });
 
         }

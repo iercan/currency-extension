@@ -9215,7 +9215,7 @@
                     </option>
 
 
-                                       <option value="1062777">
+                    <option value="1062777">
                         ETH/VND
                     </option>
 
@@ -22924,7 +22924,19 @@
                 (%)</label>
             <div class="col-md-2">
                 <input type="text" id="notification_threshold"
-                       title="Notification will be shown if a rate change above this percentage" placeholder="0-10"
+                       title="Notification will be shown if a rate change above this percentage" placeholder="0-100"
+                       data-toggle="toggle"
+                       class="form-control"/>
+                </small>
+            </div>
+        </div>
+        <div class="form-group row ">
+            <label class="col-md-5 text-right mt-2 font-weight-bold" for="notification_threshold">Notification Threshold
+                for Cryptocurrencies
+                (%)</label>
+            <div class="col-md-2">
+                <input type="text" id="notification_threshold_crypto"
+                       title="Notification will be shown if a rate change above this percentage" placeholder="0-100"
                        data-toggle="toggle"
                        class="form-control"/>
                 </small>
