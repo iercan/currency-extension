@@ -11,10 +11,10 @@ document.addEventListener('DOMContentLoaded', function(){
         }, function(items) {
             console.log(url);
             console.log(items);
-            var url='https://'+items.language+'.widgets.investing.com/live-currency-cross-rates?theme=darkTheme&hideTitle=true&pairs=';
+            var url='https://'+items.language+'.widgets.investing.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
             $("#mainframe").attr("src", url + items.selectedCurrencies.join(","));
 
-            var crypto_url='https://'+items.language+'.widgets.investing.com/crypto-currency-rates?theme=darkTheme&hideTitle=true&pairs=';
+            var crypto_url='https://'+items.language+'.widgets.investing.com/crypto-currency-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
             $("#cryptoframe").attr("src", crypto_url + items.selectedCryptoCurrencies.join(","));
 
             var hg = String(items.selectedCurrencies.length * 58 + 60);
