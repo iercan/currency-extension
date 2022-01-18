@@ -79,10 +79,10 @@ function check_rates() {
     });
 }
 
-//check rates in every 5 min
+//check rates in every 2 min
 setInterval(function () {
     check_rates();
-}, 1000 * 300);
+}, 1000 * 60 * 2);
 
 //chrome.browserAction.onClicked.addListener(function(tab) {
 //   chrome.tabs.create({ url: "/main.html" });
