@@ -13,8 +13,8 @@ setTimeout(function(){
     chrome.notifications.create(options);
 },2000);*/
 var notification_levels = {};
-var url = 'https://www.widgets.investing.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
-var crypto_url = 'https://www.widgets.investing.com/crypto-currency-rates?theme=darkTheme&hideTitle=true&pairs=';
+var url = 'https://www.investingwidgets.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
+var crypto_url = 'https://www.investingwidgets.com/crypto-currency-rates?theme=darkTheme&hideTitle=true&pairs=';
 
 function parse_widget(data, selected_currencies, notification_threshold) {
     var notify = false;
