@@ -4,7 +4,7 @@
   "name": "investing.com Currencies",
   "short_name": "investing.com",
   "description": "See live currencies by single click and get notification if you want",
-  "version": "1.27",
+  "version": "1.28",
 
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
   "icons": {
