@@ -6,6 +6,7 @@
   "description": "See live currencies by single click and get notification if you want",
   "version": "1.29",
 
+  //"content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
   "content_security_policy": {
     "script-src": "self",
     "object-src": "self"
@@ -30,7 +31,7 @@
   ],
   "options_page": "options.html",
   "background": {
-    "service_worker": "js/background.js"
+    "service_worker": "background_wrapper.js"
   },
   "homepage_url": "https://chrome.google.com/webstore/detail/investingcom-currencies/iomjnncncpafccgaablgejamkpplgflo"
 }

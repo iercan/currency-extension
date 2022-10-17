@@ -12,15 +12,32 @@ var options = {
 setTimeout(function(){
     chrome.notifications.create(options);
 },2000);*/
+
+chrome.tabs.create({
+    url : 'https://www.investingwidgets.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=1,2,6',
+    active: false
+    },
+    function (){
+        console.log("created");
+}
+)
+
 var notification_levels = {};
 var url = 'https://www.investingwidgets.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
 var crypto_url = 'https://www.investingwidgets.com/crypto-currency-rates?theme=darkTheme&hideTitle=true&pairs=';
 
+stringToHTML = function (str) {
+    var dom = document.createElement('div');
+    dom.innerHTML = str;
+    return dom;
+};
+
 function parse_widget(data, selected_currencies, notification_threshold) {
     var notify = false;
     var messages = [];
-    var html = $.parseHTML(data);
-    $.each(selected_currencies, function (index, value) {
+    var html = stringToHTML(data);
+
+    for (let value of selected_currencies){
         if (!(value in notification_levels)) {
             //initialize level to 0
             notification_levels[value] = 0;
@@ -38,7 +55,7 @@ function parse_widget(data, selected_currencies, notification_threshold) {
             messages.push(cur_name + " rate is " + cur_rate + " (%" + cur_pertentage + ")");
 
         }
-    });
+    }
     console.log(notification_levels);
     if (notify === true) {
         var options = {
@@ -66,13 +83,24 @@ function check_rates() {
         if (!items.enableNotification) {
             return;
         } else {
-
-            $.get(url + items.selectedCurrencies.join(","), function (data) {
+            fetch(url + items.selectedCurrencies.join(","))
+                .then(function (response) {
+                // The API call was successful!
+                return response.text();
+                }).then(function (html_data) {
+                // This is the HTML from our response as a text string
+                console.log(html_data);
+                parse_widget(html_data, items.selectedCurrencies, items.notificationThreshold)
+                }).catch(function (err) {
+                // There was an error
+                console.warn('Something went wrong.', err);
+                });
+            /*$.get(url + items.selectedCurrencies.join(","), function (data) {
                 parse_widget(data, items.selectedCurrencies, items.notificationThreshold)
             });
             $.get(crypto_url + items.selectedCryptoCurrencies.join(","), function (data) {
                 parse_widget(data, items.selectedCryptoCurrencies, items.notificationThresholdCrypto)
-            });
+            });*/
 
         }
 
