@@ -2,4 +2,8 @@
     width: 300px;
 }
 
+li.select2-selection__choice:not(.ui-sortable-helper) {
+    cursor: grab !important;
+}
+
 

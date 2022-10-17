@@ -44,12 +44,12 @@ function restore_options() {
         notificationThresholdCrypto: 5,
         language: "www"
     }, function (items) {
-        $('#currency_select').val(items.selectedCurrencies);
-        $('#crypto_currency_select').val(items.selectedCryptoCurrencies);
-        $('#currency_select').trigger('change');
-        $('#crypto_currency_select').trigger('change');
-        $('#language').val(items.language);
-        $('#language').trigger('change');
+        sort_select_box("currency_select", items.selectedCurrencies);
+        $('#currency_select').val(items.selectedCurrencies).trigger('change');
+        sort_select_box("crypto_currency_select", items.selectedCryptoCurrencies);
+        $('#crypto_currency_select').val(items.selectedCryptoCurrencies).trigger('change');
+
+        $('#language').val(items.language).trigger('change');
         if (items.enableNotification) {
             $("#enable_notification").bootstrapToggle('on');
         } else {
@@ -60,8 +60,68 @@ function restore_options() {
     });
 }
 
-$('#currency_select').select2();
-$('#crypto_currency_select').select2();
+moveElementToEndOfParent = function(element) {
+    let parent = element.parent();
+    element.detach();
+    parent.append(element);
+};
+
+sort_select_box = function (id, values) {
+    values.forEach(function (v){
+        let element = $("#"+id).children("option[value='"+v+"']");
+        moveElementToEndOfParent(element);
+    });
+
+}
+
+let currency_select_elem = $('#currency_select');
+currency_select_elem.select2({
+    placeholder: 'Select currencies'
+}).on("select2:select", function (evt) {
+     let id = evt.params.data.id;
+     console.log(id);
+     let element = $(this).children("option[value="+id+"]");
+     moveElementToEndOfParent(element);
+     $(this).trigger("change");
+
+});
+let ele = currency_select_elem.parent().find("ul.select2-selection__rendered");
+ele.sortable({
+    containment: 'parent',
+    cursor: "grabbing",
+    update: function() {
+        currency_select_elem.parent().find("ul.select2-selection__rendered").children("li[title]").each(function(i, obj){
+            let element = $("#currency_select").children('option').filter(function () { return $(this).html() == obj.title });
+            moveElementToEndOfParent(element)
+        });
+        console.log(""+currency_select_elem.val())
+    }
+});
+
+let crypto_currency_select_elem = $('#crypto_currency_select');
+crypto_currency_select_elem.select2({
+    placeholder: 'Select crypto currencies'
+}).on("select2:select", function (evt) {
+    let id = evt.params.data.id;
+    console.log(id);
+    let element = $(this).children("option[value="+id+"]");
+    moveElementToEndOfParent(element);
+    $(this).trigger("change");
+
+});
+let cele = crypto_currency_select_elem.parent().find("ul.select2-selection__rendered");
+cele.sortable({
+    containment: 'parent',
+    cursor: "grabbing",
+    update: function() {
+        crypto_currency_select_elem.parent().find("ul.select2-selection__rendered").children("li[title]").each(function(i, obj){
+            let element = $("#crypto_currency_select").children('option').filter(function () { return $(this).html() == obj.title });
+            moveElementToEndOfParent(element)
+        });
+        console.log(""+crypto_currency_select_elem.val())
+    }
+});
+
 $('#language').select2({
         minimumResultsForSearch: -1
     }
