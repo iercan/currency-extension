@@ -13,15 +13,6 @@ setTimeout(function(){
     chrome.notifications.create(options);
 },2000);*/
 
-chrome.tabs.create({
-    url : 'https://www.investingwidgets.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=1,2,6',
-    active: false
-    },
-    function (){
-        console.log("created");
-}
-)
-
 var notification_levels = {};
 var url = 'https://www.investingwidgets.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
 var crypto_url = 'https://www.investingwidgets.com/crypto-currency-rates?theme=darkTheme&hideTitle=true&pairs=';
@@ -90,7 +81,10 @@ function check_rates() {
                 }).then(function (html_data) {
                 // This is the HTML from our response as a text string
                 console.log(html_data);
-                parse_widget(html_data, items.selectedCurrencies, items.notificationThreshold)
+                var el = self.createElement( 'html' );
+                el.innerHTML = html_data;
+                console.log(el.getElementsByTagName( 'a' ));
+                //parse_widget(html_data, items.selectedCurrencies, items.notificationThreshold)
                 }).catch(function (err) {
                 // There was an error
                 console.warn('Something went wrong.', err);
@@ -106,11 +100,19 @@ function check_rates() {
 
     });
 }
-
 //check rates in every 2 min
-setInterval(function () {
+// setInterval(function () {
+//     check_rates();
+// }, 1000 * 60 * 2);
+
+const periodInMinutes  = 0.1;
+chrome.runtime.onInstalled.addListener( details => {
+    chrome.alarms.create( "myAlarm", { periodInMinutes } );
+});
+chrome.alarms.onAlarm.addListener( ( alarm ) => {
+    //check_rates();
     check_rates();
-}, 1000 * 60 * 2);
+});
 
 //chrome.browserAction.onClicked.addListener(function(tab) {
 //   chrome.tabs.create({ url: "/main.html" });

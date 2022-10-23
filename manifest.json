@@ -4,7 +4,7 @@
   "name": "investing.com Currencies",
   "short_name": "investing.com",
   "description": "See live currencies by single click and get notification if you want",
-  "version": "1.29",
+  "version": "2.0",
 
   "content_security_policy": {
     "script-src": "self",
@@ -22,15 +22,12 @@
       "default_popup": "main.html"
   },
   "permissions": [
-      "storage",
-      "notifications"
+      "storage"
+
   ],
   "host_permissions": [
     "https://*.investingwidgets.com/"
   ],
   "options_page": "options.html",
-  "background": {
-    "service_worker": "js/background.js"
-  },
   "homepage_url": "https://chrome.google.com/webstore/detail/investingcom-currencies/iomjnncncpafccgaablgejamkpplgflo"
 }
