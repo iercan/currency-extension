@@ -14,7 +14,7 @@ services:
   app:
     build:
       context: .
-      #    restart: unless-stopped
+    restart: unless-stopped
     environment:
       FLASK_ENV: "production"
       OAUTHLIB_INSECURE_TRANSPORT: "1"
