@@ -1,2 +1,5 @@
 .idea/
 *.zip
+venv/
+*.pyc
+log/

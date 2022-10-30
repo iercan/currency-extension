@@ -1,0 +1,32 @@
+version: '2.4'
+
+volumes:
+  redis:
+
+services:
+  redis:
+    image: redis:6.0.9-buster
+    restart: unless-stopped
+    volumes:
+      - redis:/data
+        #ports:
+        #- "6379:6379"
+  app:
+    build:
+      context: .
+      #    restart: unless-stopped
+    environment:
+      FLASK_ENV: "production"
+      OAUTHLIB_INSECURE_TRANSPORT: "1"
+      #ports:
+      #- "5000:5000"    
+  nginx:
+    image: nginx:1.22.0
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./sites-enabled:/etc/nginx/conf.d
+      - ./log/:/var/log/nginx

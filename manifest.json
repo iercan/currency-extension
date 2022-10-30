@@ -22,12 +22,17 @@
       "default_popup": "main.html"
   },
   "permissions": [
-      "storage"
-
+      "storage",
+      "alarms",
+      "notifications"
   ],
   "host_permissions": [
-    "https://*.investingwidgets.com/"
+    "https://*.investingwidgets.com/",
+    "https://*.investingcurrencies.com/"
   ],
+  "background": {
+    "service_worker": "js/background.js"
+  },
   "options_page": "options.html",
   "homepage_url": "https://chrome.google.com/webstore/detail/investingcom-currencies/iomjnncncpafccgaablgejamkpplgflo"
 }

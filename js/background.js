@@ -2,48 +2,28 @@
  * Created by ibrahim on 22.05.2017.
  */
 
-/*
-var options = {
-    type: 'basic',
-    title: 'Currency Changes',
-    message: 'USD/TRY rate is 6. (%1.23)',
-    iconUrl: 'css/images/icon.jpeg'
-}
-setTimeout(function(){
-    chrome.notifications.create(options);
-},2000);*/
-
 var notification_levels = {};
-var url = 'https://www.investingwidgets.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
-var crypto_url = 'https://www.investingwidgets.com/crypto-currency-rates?theme=darkTheme&hideTitle=true&pairs=';
+var url = 'https://www.investingcurrencies.com?pairs=';
 
-stringToHTML = function (str) {
-    var dom = document.createElement('div');
-    dom.innerHTML = str;
-    return dom;
-};
 
-function parse_widget(data, selected_currencies, notification_threshold) {
+function notify(data, selected_currencies, notification_threshold) {
     var notify = false;
     var messages = [];
-    var html = stringToHTML(data);
 
     for (let value of selected_currencies){
         if (!(value in notification_levels)) {
             //initialize level to 0
             notification_levels[value] = 0;
         }
-        var cur_pertentage = parseFloat($(html).find(".pid-" + value + "-pcp").eq(0).text());
-        //console.log("per:" + cur_pertentage);
-        var cur_name = $(html).find("#pair_" + value + " .js-col-pair_name a").eq(0).text();
-        //console.log("name:" + cur_name);
-        var cur_rate = $(html).find(".pid-" + value + "-bid").eq(0).text();
-        //console.log("rate:" + cur_rate);
-        if (Math.abs(cur_pertentage - notification_levels[value]) > notification_threshold) {
+        var cur_percentage = data[value]["percentage"];
+        var cur_name = data[value]["name"];
+        var cur_rate = data[value]["rate"];
+
+        if (Math.abs(cur_percentage - notification_levels[value]) > notification_threshold) {
             //console.log("lev: " + level + " " + notification_levels[value]);
-            notification_levels[value] = cur_pertentage;
+            notification_levels[value] = cur_percentage;
             notify = true;
-            messages.push(cur_name + " rate is " + cur_rate + " (%" + cur_pertentage + ")");
+            messages.push(cur_name + " rate is " + cur_rate + " (%" + cur_percentage + ")");
 
         }
     }
@@ -53,7 +33,7 @@ function parse_widget(data, selected_currencies, notification_threshold) {
             type: 'basic',
             title: 'Currency Rates Changes',
             message: messages.join("\n"),
-            iconUrl: 'css/images/icon.jpeg',
+            iconUrl: '../css/images/icon.jpeg',
             requireInteraction: true
         };
         //console.log(messages);
@@ -74,38 +54,24 @@ function check_rates() {
         if (!items.enableNotification) {
             return;
         } else {
-            fetch(url + items.selectedCurrencies.join(","))
+            fetch(url + items.selectedCurrencies.concat(items.selectedCryptoCurrencies).join(","))
                 .then(function (response) {
                 // The API call was successful!
-                return response.text();
-                }).then(function (html_data) {
-                // This is the HTML from our response as a text string
-                console.log(html_data);
-                var el = self.createElement( 'html' );
-                el.innerHTML = html_data;
-                console.log(el.getElementsByTagName( 'a' ));
-                //parse_widget(html_data, items.selectedCurrencies, items.notificationThreshold)
+                let data = response.json();
+                data.then(function(result) {
+                    notify(result, items.selectedCurrencies, items.notificationThreshold)
+                    notify(result, items.selectedCryptoCurrencies, items.notificationThresholdCrypto)
+                })
                 }).catch(function (err) {
                 // There was an error
                 console.warn('Something went wrong.', err);
                 });
-            /*$.get(url + items.selectedCurrencies.join(","), function (data) {
-                parse_widget(data, items.selectedCurrencies, items.notificationThreshold)
-            });
-            $.get(crypto_url + items.selectedCryptoCurrencies.join(","), function (data) {
-                parse_widget(data, items.selectedCryptoCurrencies, items.notificationThresholdCrypto)
-            });*/
-
         }
 
     });
 }
-//check rates in every 2 min
-// setInterval(function () {
-//     check_rates();
-// }, 1000 * 60 * 2);
 
-const periodInMinutes  = 0.1;
+const periodInMinutes  = 2;
 chrome.runtime.onInstalled.addListener( details => {
     chrome.alarms.create( "myAlarm", { periodInMinutes } );
 });
@@ -114,7 +80,3 @@ chrome.alarms.onAlarm.addListener( ( alarm ) => {
     check_rates();
 });
 
-//chrome.browserAction.onClicked.addListener(function(tab) {
-//   chrome.tabs.create({ url: "/main.html" });
-//$("#mainframe").attr("height", "100px" );
-//});

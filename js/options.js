@@ -3,24 +3,24 @@ function save_options() {
     var curlist = $("#currency_select").select2("val");
     var crypto_curlist = $("#crypto_currency_select").select2("val");
     var language = $("#language").select2("val");
-/*    var enable_not = $("#enable_notification").prop("checked");
+    var enable_not = $("#enable_notification").prop("checked");
     var threshold = parseFloat($("#notification_threshold").val());
-    var threshold_crypto = parseFloat($("#notification_threshold_crypto").val());*/
+    var threshold_crypto = parseFloat($("#notification_threshold_crypto").val());
     var status = $('#status');
-/*    if (threshold > 100 || threshold <= 0 || !threshold) {
+    if (threshold > 100 || threshold <= 0 || !threshold) {
         status.text('Error: Threshold should be between 0 and 100.');
         return;
     }
     if (threshold_crypto > 100 || threshold_crypto <= 0 || !threshold) {
         status.text('Error: Threshold should be between 0 and 100.');
         return;
-    }*/
+    }
     chrome.storage.sync.set({
         selectedCurrencies: curlist,
         selectedCryptoCurrencies: crypto_curlist,
-/*        enableNotification: enable_not,
+        enableNotification: enable_not,
         notificationThreshold: threshold,
-        notificationThresholdCrypto: threshold_crypto,*/
+        notificationThresholdCrypto: threshold_crypto,
         language: language
     }, function () {
         // Update status to let user know options were saved.
@@ -39,9 +39,9 @@ function restore_options() {
     chrome.storage.sync.get({
         selectedCurrencies: ["1", "2", "6"],
         selectedCryptoCurrencies: ["945629", "1058142", "1158819"],
-/*        enableNotification: true,
+        enableNotification: true,
         notificationThreshold: 0.5,
-        notificationThresholdCrypto: 5,*/
+        notificationThresholdCrypto: 5,
         language: "www"
     }, function (items) {
         sort_select_box("currency_select", items.selectedCurrencies);
@@ -50,13 +50,13 @@ function restore_options() {
         $('#crypto_currency_select').val(items.selectedCryptoCurrencies).trigger('change');
 
         $('#language').val(items.language).trigger('change');
-/*        if (items.enableNotification) {
+        if (items.enableNotification) {
             $("#enable_notification").bootstrapToggle('on');
         } else {
             $("#enable_notification").bootstrapToggle('off');
         }
         $("#notification_threshold").val(items.notificationThreshold);
-        $("#notification_threshold_crypto").val(items.notificationThresholdCrypto);*/
+        $("#notification_threshold_crypto").val(items.notificationThresholdCrypto);
     });
 }
 
