@@ -13,8 +13,14 @@ def currencies():  # put application's code here
     pairs = request.args.get("pairs")
     if not pairs:
         return jsonify({'error': 'Currency pairs should be provided'}), 400
+
     retrieve = []
     for curr_id in pairs.split(','):
+        try:
+            int(curr_id)
+        except ValueError:
+            return jsonify({'error': 'Bad params'}), 400
+
         val = redis_conn.get(curr_id)
         if val:
             val = val.decode("utf-8")
