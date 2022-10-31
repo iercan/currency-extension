@@ -30,9 +30,7 @@ function notify(data, selected_currencies, notification_threshold) {
 
         }
     }
-    chrome.storage.local.set({notification_levels: notification_levels}, function() {
-        console.log(notification_levels);
-    });
+
     if (notify === true) {
         var options = {
             type: 'basic',
@@ -66,7 +64,10 @@ function check_rates() {
                 data.then(function(result) {
                     notify(result, items.selectedCurrencies, items.notificationThreshold)
                     notify(result, items.selectedCryptoCurrencies, items.notificationThresholdCrypto)
-                })
+                });
+                chrome.storage.local.set({notification_levels: notification_levels}, function() {
+                    console.log(notification_levels);
+                });
                 }).catch(function (err) {
                 // There was an error
                 console.warn('Something went wrong.', err);
