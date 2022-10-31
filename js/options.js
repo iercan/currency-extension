@@ -3,6 +3,7 @@ function save_options() {
     var curlist = $("#currency_select").select2("val");
     var crypto_curlist = $("#crypto_currency_select").select2("val");
     var language = $("#language").select2("val");
+    var active_tab = $("#active_tab").select2("val");
     var enable_not = $("#enable_notification").prop("checked");
     var threshold = parseFloat($("#notification_threshold").val());
     var threshold_crypto = parseFloat($("#notification_threshold_crypto").val());
@@ -21,7 +22,8 @@ function save_options() {
         enableNotification: enable_not,
         notificationThreshold: threshold,
         notificationThresholdCrypto: threshold_crypto,
-        language: language
+        language: language,
+        active_tab: active_tab
     }, function () {
         // Update status to let user know options were saved.
 
@@ -42,7 +44,8 @@ function restore_options() {
         enableNotification: true,
         notificationThreshold: 0.5,
         notificationThresholdCrypto: 5,
-        language: "www"
+        language: "www",
+        active_tab: "currency"
     }, function (items) {
         sort_select_box("currency_select", items.selectedCurrencies);
         $('#currency_select').val(items.selectedCurrencies).trigger('change');
@@ -50,6 +53,7 @@ function restore_options() {
         $('#crypto_currency_select').val(items.selectedCryptoCurrencies).trigger('change');
 
         $('#language').val(items.language).trigger('change');
+        $('#active_tab').val(items.active_tab).trigger('change');
         if (items.enableNotification) {
             $("#enable_notification").bootstrapToggle('on');
         } else {
@@ -123,6 +127,11 @@ cele.sortable({
 });
 
 $('#language').select2({
+        minimumResultsForSearch: -1
+    }
+);
+
+$('#active_tab').select2({
         minimumResultsForSearch: -1
     }
 );

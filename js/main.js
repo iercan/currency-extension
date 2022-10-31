@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
         chrome.storage.sync.get({
             selectedCurrencies: ["1", "2", "6"],
             language: "www",
-            selectedCryptoCurrencies: ["945629", "1058142", "1158819"]
+            selectedCryptoCurrencies: ["945629", "1058142", "1158819"],
+            active_tab: "currency"
         }, function (items) {
             console.log(url);
             console.log(items);
@@ -20,6 +21,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             hg = String(items.selectedCryptoCurrencies.length * 58 + 60);
             $("#cryptoframe").attr("height", hg);
+
+            var tab = $("#"+items.active_tab+"-tab");
+            tab.attr("aria-selected", "true");
+            tab.addClass("active");
+
         });
     }, 800);
     setTimeout(function () {
