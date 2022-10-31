@@ -7,7 +7,7 @@ COPY requirements.txt /tmp/
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 RUN mkdir -p /opt/app
-COPY . /opt/app/
+COPY app.py run.sh /opt/app/
 RUN chmod +x /opt/app/run.sh
 
 WORKDIR /opt/app
