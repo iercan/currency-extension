@@ -5,6 +5,9 @@
 var notification_levels = {};
 var url = 'https://www.investingcurrencies.com?pairs=';
 
+chrome.storage.local.get({notification_levels: {}}, function(result) {
+    notification_levels = result.notification_levels;
+});
 
 function notify(data, selected_currencies, notification_threshold) {
     var notify = false;
@@ -27,7 +30,9 @@ function notify(data, selected_currencies, notification_threshold) {
 
         }
     }
-    console.log(notification_levels);
+    chrome.storage.local.set({notification_levels: notification_levels}, function() {
+        console.log(notification_levels);
+    });
     if (notify === true) {
         var options = {
             type: 'basic',
@@ -71,7 +76,7 @@ function check_rates() {
     });
 }
 
-const periodInMinutes  = 2;
+const periodInMinutes  = 5;
 chrome.runtime.onInstalled.addListener( details => {
     chrome.alarms.create( "myAlarm", { periodInMinutes } );
 });
