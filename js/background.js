@@ -77,7 +77,7 @@ function check_rates() {
     });
 }
 
-const periodInMinutes  = 5;
+const periodInMinutes  = 3;
 chrome.runtime.onInstalled.addListener( details => {
     chrome.alarms.create( "myAlarm", { periodInMinutes } );
 });
