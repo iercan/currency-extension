@@ -34,6 +34,19 @@ function save_options() {
 
     });
 }
+moveElementToEndOfParent = function(element) {
+    let parent = element.parent();
+    element.detach();
+    parent.append(element);
+};
+
+sort_select_box = function (id, values) {
+    values.forEach(function (v){
+        let element = $("#"+id).children("option[value='"+v+"']");
+        moveElementToEndOfParent(element);
+    });
+
+}
 
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
@@ -61,80 +74,69 @@ function restore_options() {
         }
         $("#notification_threshold").val(items.notificationThreshold);
         $("#notification_threshold_crypto").val(items.notificationThresholdCrypto);
+        let currency_select_elem = $('#currency_select');
+        currency_select_elem.select2({
+            placeholder: 'Select currencies'
+        }).on("select2:select", function (evt) {
+            let id = evt.params.data.id;
+            console.log(id);
+            let element = $(this).children("option[value="+id+"]");
+            moveElementToEndOfParent(element);
+            $(this).trigger("change");
+
+        });
+        let ele = currency_select_elem.parent().find("ul.select2-selection__rendered");
+        ele.sortable({
+            containment: 'parent',
+            cursor: "grabbing",
+            update: function() {
+                currency_select_elem.parent().find("ul.select2-selection__rendered").children("li[title]").each(function(i, obj){
+                    let element = $("#currency_select").children('option').filter(function () { return $(this).html() == obj.title });
+                    moveElementToEndOfParent(element)
+                });
+                console.log(""+currency_select_elem.val())
+            }
+        });
+
+        let crypto_currency_select_elem = $('#crypto_currency_select');
+        crypto_currency_select_elem.select2({
+            placeholder: 'Select crypto currencies'
+        }).on("select2:select", function (evt) {
+            let id = evt.params.data.id;
+            console.log(id);
+            let element = $(this).children("option[value="+id+"]");
+            moveElementToEndOfParent(element);
+            $(this).trigger("change");
+
+        });
+        let cele = crypto_currency_select_elem.parent().find("ul.select2-selection__rendered");
+        cele.sortable({
+            containment: 'parent',
+            cursor: "grabbing",
+            update: function() {
+                crypto_currency_select_elem.parent().find("ul.select2-selection__rendered").children("li[title]").each(function(i, obj){
+                    let element = $("#crypto_currency_select").children('option').filter(function () { return $(this).html() == obj.title });
+                    moveElementToEndOfParent(element)
+                });
+                console.log(""+crypto_currency_select_elem.val())
+            }
+        });
+
+        $('#language').select2({
+                minimumResultsForSearch: -1
+            }
+        );
+
+        $('#active_tab').select2({
+                minimumResultsForSearch: -1
+            }
+        );
     });
 }
 
-moveElementToEndOfParent = function(element) {
-    let parent = element.parent();
-    element.detach();
-    parent.append(element);
-};
 
-sort_select_box = function (id, values) {
-    values.forEach(function (v){
-        let element = $("#"+id).children("option[value='"+v+"']");
-        moveElementToEndOfParent(element);
-    });
 
-}
 
-let currency_select_elem = $('#currency_select');
-currency_select_elem.select2({
-    placeholder: 'Select currencies'
-}).on("select2:select", function (evt) {
-     let id = evt.params.data.id;
-     console.log(id);
-     let element = $(this).children("option[value="+id+"]");
-     moveElementToEndOfParent(element);
-     $(this).trigger("change");
-
-});
-let ele = currency_select_elem.parent().find("ul.select2-selection__rendered");
-ele.sortable({
-    containment: 'parent',
-    cursor: "grabbing",
-    update: function() {
-        currency_select_elem.parent().find("ul.select2-selection__rendered").children("li[title]").each(function(i, obj){
-            let element = $("#currency_select").children('option').filter(function () { return $(this).html() == obj.title });
-            moveElementToEndOfParent(element)
-        });
-        console.log(""+currency_select_elem.val())
-    }
-});
-
-let crypto_currency_select_elem = $('#crypto_currency_select');
-crypto_currency_select_elem.select2({
-    placeholder: 'Select crypto currencies'
-}).on("select2:select", function (evt) {
-    let id = evt.params.data.id;
-    console.log(id);
-    let element = $(this).children("option[value="+id+"]");
-    moveElementToEndOfParent(element);
-    $(this).trigger("change");
-
-});
-let cele = crypto_currency_select_elem.parent().find("ul.select2-selection__rendered");
-cele.sortable({
-    containment: 'parent',
-    cursor: "grabbing",
-    update: function() {
-        crypto_currency_select_elem.parent().find("ul.select2-selection__rendered").children("li[title]").each(function(i, obj){
-            let element = $("#crypto_currency_select").children('option').filter(function () { return $(this).html() == obj.title });
-            moveElementToEndOfParent(element)
-        });
-        console.log(""+crypto_currency_select_elem.val())
-    }
-});
-
-$('#language').select2({
-        minimumResultsForSearch: -1
-    }
-);
-
-$('#active_tab').select2({
-        minimumResultsForSearch: -1
-    }
-);
 
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById('save').addEventListener('click', save_options);
