@@ -10,6 +10,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }, function (items) {
             console.log(url);
             console.log(items);
+            var tab = $("#"+items.active_tab+"-tab");
+            tab.attr("aria-selected", "true");
+            tab.addClass("active");
+            var tab_content = $("#"+items.active_tab);
+            tab_content.addClass("show");
+            tab_content.addClass("active");
+
             var url = 'https://' + items.language + '.investingwidgets.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
             $("#mainframe").attr("src", url + items.selectedCurrencies.join(","));
 
@@ -22,14 +29,12 @@ document.addEventListener('DOMContentLoaded', function () {
             hg = String(items.selectedCryptoCurrencies.length * 58 + 60);
             $("#cryptoframe").attr("height", hg);
 
-            var tab = $("#"+items.active_tab+"-tab");
-            tab.attr("aria-selected", "true");
-            tab.addClass("active");
+
 
         });
     }, 800);
     setTimeout(function () {
-        $("#processing").hide();
+        $(".processing").hide();
     }, 1200);
 });
 

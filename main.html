@@ -20,8 +20,8 @@
             <a class="nav-link " id="crypto-tab" data-toggle="tab" href="#crypto"  aria-controls="profile" aria-selected="false">Cryptocurrency</a>
         </li>
     </ul>
-    <div class="tab-content border-top-0" id="myTabContent">
-        <div class="tab-pane fade show active " id="currency" role="tabpanel" aria-labelledby="currency-tab">
+    <div class="tab-content  border-top-0 "  style="width: 325px;" id="myTabContent">
+        <div class="tab-pane fade"  id="currency" role="tabpanel" aria-labelledby="currency-tab">
             <iframe id="mainframe"
                     width="325px"
                     height="100px"
@@ -31,7 +31,6 @@
                     marginwidth="0"
                     marginheight="0">
             </iframe>
-            <span id=processing>Getting data...</span>
 
         </div>
         <div class="tab-pane fade" id="crypto" role="tabpanel" aria-labelledby="crypto-tab">
@@ -42,8 +41,12 @@
                     allowtransparency="true"
                     sandbox="allow-scripts allow-pointer-lock allow-popups allow-same-origin allow-top-navigation allow-forms"
                     marginwidth="0"
-                    marginheight="0"></iframe>
+                    marginheight="0">
+
+            </iframe>
+
         </div>
+        <span class="processing">Getting data...</span>
         <div class="poweredBy" style="font-family: Arial, Helvetica, sans-serif;">
             <a style="align: left; font-size: small" target="_blank" href="/options.html">Options</a>
             <div style="float:right; font-size: small">Powered by&nbsp;
