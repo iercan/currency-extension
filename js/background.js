@@ -2,29 +2,24 @@
  * Created by ibrahim on 22.05.2017.
  */
 
-var notification_levels = {};
 var url = 'https://www.investingcurrencies.com?pairs=';
-
-chrome.storage.local.get({notification_levels: {}}, function(result) {
-    notification_levels = result.notification_levels;
-});
+var notification_levels = {};
 
 function notify(data, selected_currencies, notification_threshold) {
     var notify = false;
     var messages = [];
 
-    for (let value of selected_currencies){
-        if (!(value in notification_levels)) {
+    for (let curr_id of selected_currencies) {
+        if (!(curr_id in notification_levels)) {
             //initialize level to 0
-            notification_levels[value] = 0;
+            notification_levels[curr_id] = 0;
         }
-        var cur_percentage = data[value]["percentage"];
-        var cur_name = data[value]["name"];
-        var cur_rate = data[value]["rate"];
+        var cur_percentage = data[curr_id]["percentage"];
+        var cur_name = data[curr_id]["name"];
+        var cur_rate = data[curr_id]["rate"];
 
-        if (Math.abs(cur_percentage - notification_levels[value]) > notification_threshold) {
-            //console.log("lev: " + level + " " + notification_levels[value]);
-            notification_levels[value] = cur_percentage;
+        if (Math.abs(cur_percentage - notification_levels[curr_id]) > notification_threshold) {
+            notification_levels[curr_id] = cur_percentage;
             notify = true;
             messages.push(cur_name + " rate is " + cur_rate + " (%" + cur_percentage + ")");
 
@@ -57,31 +52,35 @@ function check_rates() {
         if (!items.enableNotification) {
             return;
         } else {
+            chrome.storage.local.get({notification_levels: {}}, function (result) {
+                notification_levels = result.notification_levels;
+            });
             fetch(url + items.selectedCurrencies.concat(items.selectedCryptoCurrencies).join(","))
                 .then(function (response) {
-                // The API call was successful!
-                let data = response.json();
-                data.then(function(result) {
-                    notify(result, items.selectedCurrencies, items.notificationThreshold)
-                    notify(result, items.selectedCryptoCurrencies, items.notificationThresholdCrypto)
-                });
-                chrome.storage.local.set({notification_levels: notification_levels}, function() {
-                    console.log(notification_levels);
-                });
+                    // The API call was successful!
+                    let data = response.json();
+                    data.then(function (result) {
+
+                        notify(result, items.selectedCurrencies, items.notificationThreshold)
+                        notify(result, items.selectedCryptoCurrencies, items.notificationThresholdCrypto)
+                        chrome.storage.local.set({notification_levels: notification_levels}, function () {
+                            console.log(notification_levels);
+                        });
+                    });
                 }).catch(function (err) {
                 // There was an error
                 console.warn('Something went wrong.', err);
-                });
+            });
         }
 
     });
 }
 
-const periodInMinutes  = 3;
-chrome.runtime.onInstalled.addListener( details => {
-    chrome.alarms.create( "myAlarm", { periodInMinutes } );
+const periodInMinutes = 3;
+chrome.runtime.onInstalled.addListener(details => {
+    chrome.alarms.create("myAlarm", {periodInMinutes});
 });
-chrome.alarms.onAlarm.addListener( ( alarm ) => {
+chrome.alarms.onAlarm.addListener((alarm) => {
     //check_rates();
     check_rates();
 });
