@@ -14,16 +14,24 @@ function notify(data, selected_currencies, notification_threshold) {
             //initialize level to 0
             notification_levels[curr_id] = 0;
         }
-        var cur_percentage = data[curr_id]["percentage"];
-        var cur_name = data[curr_id]["name"];
-        var cur_rate = data[curr_id]["rate"];
+        try {
+            var cur_percentage = data[curr_id]["percentage"];
+            var cur_name = data[curr_id]["name"];
+            var cur_rate = data[curr_id]["rate"];
+            if (!cur_rate || !cur_name || !cur_percentage) continue;
 
-        if (Math.abs(cur_percentage - notification_levels[curr_id]) > notification_threshold) {
-            notification_levels[curr_id] = cur_percentage;
-            notify = true;
-            messages.push(cur_name + " rate is " + cur_rate + " (%" + cur_percentage + ")");
+            if (Math.abs(cur_percentage - notification_levels[curr_id]) > notification_threshold) {
+                notification_levels[curr_id] = cur_percentage;
+                notify = true;
+                messages.push(cur_name + " rate is " + cur_rate + " (%" + cur_percentage + ")");
 
+            }
         }
+        catch(err) {
+            console.log(curr_id)
+            console.log(err.message);
+        }
+
     }
 
     if (notify === true) {
@@ -57,6 +65,10 @@ function check_rates() {
             });
             fetch(url + items.selectedCurrencies.concat(items.selectedCryptoCurrencies).join(","))
                 .then(function (response) {
+                    if (response.status !== 200) {
+                        console.log('Looks like there was a problem. Status Code: ' + response.status);
+                        return;
+                    }
                     // The API call was successful!
                     let data = response.json();
                     data.then(function (result) {
@@ -69,7 +81,7 @@ function check_rates() {
                     });
                 }).catch(function (err) {
                 // There was an error
-                console.warn('Something went wrong.', err);
+                console.log('Something went wrong.', err);
             });
         }
 

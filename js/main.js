@@ -17,11 +17,14 @@ document.addEventListener('DOMContentLoaded', function () {
             tab_content.addClass("show");
             tab_content.addClass("active");
 
-            var url = 'https://' + items.language + '.investingwidgets.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
-            $("#mainframe").attr("src", url + items.selectedCurrencies.join(","));
-
-            var crypto_url = 'https://' + items.language + '.investingwidgets.com/crypto-currency-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
-            $("#cryptoframe").attr("src", crypto_url + items.selectedCryptoCurrencies.join(","));
+            if(items.selectedCurrencies.length > 0){
+                var url = 'https://' + items.language + '.investingwidgets.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
+                $("#mainframe").attr("src", url + items.selectedCurrencies.join(","));
+            }
+            if (items.selectedCryptoCurrencies.length > 0){
+                var crypto_url = 'https://' + items.language + '.investingwidgets.com/crypto-currency-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs=';
+                $("#cryptoframe").attr("src", crypto_url + items.selectedCryptoCurrencies.join(","));
+            }
 
             var hg = String(items.selectedCurrencies.length * 58 + 60);
             $("#mainframe").attr("height", hg);

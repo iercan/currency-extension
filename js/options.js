@@ -16,6 +16,10 @@ function save_options() {
         status.text('Error: Threshold should be between 0 and 100.');
         return;
     }
+    if(curlist.length > 15 || crypto_curlist.length > 15){
+        status.text('Error: You can select maximum 15 currency.');
+        return;
+    }
     chrome.storage.sync.set({
         selectedCurrencies: curlist,
         selectedCryptoCurrencies: crypto_curlist,
