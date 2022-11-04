@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify
+import logging
 import redis
-from bs4 import BeautifulSoup as Soup
 import urllib
+from flask import Flask, request, jsonify
+from bs4 import BeautifulSoup as Soup
 redis_conn = redis.Redis(host='redis', port='6379', db=0)
 app = Flask(__name__)
 TTL = 600
@@ -37,7 +38,9 @@ def currencies():  # put application's code here
 
     if retrieve:
         try:
-            html = urllib.request.urlopen(CURRENCY_URL.format(','.join(retrieve)))
+            uri = CURRENCY_URL.format(','.join(retrieve))
+            app.logger.info("Sending request to {}".format(uri))
+            html = urllib.request.urlopen(uri)
             soup = Soup(html, features='html.parser')
         except:
             return jsonify({'error': 'Could not retrieve data from investing'}), 400
@@ -56,6 +59,9 @@ def currencies():  # put application's code here
                 ret_json[curr_id] = {'name': None, 'rate': None, 'percentage': None}
     return jsonify(ret_json)
 
+gunicorn_logger = logging.getLogger('gunicorn.error')
+app.logger.handlers = gunicorn_logger.handlers
+app.logger.setLevel(gunicorn_logger.level)
 
 if __name__ == '__main__':
     app.run()

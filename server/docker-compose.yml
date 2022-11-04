@@ -15,9 +15,6 @@ services:
     build:
       context: .
     restart: unless-stopped
-    environment:
-      FLASK_ENV: "production"
-      OAUTHLIB_INSECURE_TRANSPORT: "1"
       #ports:
       #- "5000:5000"    
   nginx:
@@ -25,7 +22,6 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./sites-enabled:/etc/nginx/conf.d
