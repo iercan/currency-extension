@@ -60,7 +60,7 @@ function check_rates() {
         if (!items.enableNotification) {
             return;
         } else {
-            chrome.storage.local.get({notification_levels: {}}, function (result) {
+            chrome.storage.session.get({notification_levels: {}}, function (result) {
                 notification_levels = result.notification_levels;
             });
             fetch(url + items.selectedCurrencies.concat(items.selectedCryptoCurrencies).join(","))
@@ -75,7 +75,7 @@ function check_rates() {
 
                         notify(result, items.selectedCurrencies, items.notificationThreshold)
                         notify(result, items.selectedCryptoCurrencies, items.notificationThresholdCrypto)
-                        chrome.storage.local.set({notification_levels: notification_levels}, function () {
+                        chrome.storage.session.set({notification_levels: notification_levels}, function () {
                             console.log(notification_levels);
                         });
                     });
