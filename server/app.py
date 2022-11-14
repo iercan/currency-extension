@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup as Soup
 redis_conn = redis.Redis(host='redis', port='6379', db=0)
 app = Flask(__name__)
 TTL = 600
-CURRENCY_URL = 'https://www.investingwidgets.com/live-currency-cross-rates?roundedCorners=true&theme=darkTheme&hideTitle=true&pairs={}'
+CURRENCY_URL = 'https://www.investingwidgets.com/live-currency-cross-rates?pairs={}'
 
 @app.route('/')
 def currencies():  # put application's code here
