@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup as Soup
 redis_conn = redis.Redis(host='redis', port='6379', db=0)
 app = Flask(__name__)
-TTL = 600
+TTL = 1800
 CURRENCY_URL = 'https://www.investingwidgets.com/live-currency-cross-rates?pairs={}'
 
 @app.route('/')
@@ -39,10 +39,14 @@ def currencies():  # put application's code here
     if retrieve:
         try:
             uri = CURRENCY_URL.format(','.join(retrieve))
+            hdr = {'User-Agent': "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"}
             app.logger.info("Sending request to {}".format(uri))
-            html = urllib.request.urlopen(uri)
+            req = urllib.request.Request(uri, headers=hdr)
+            html = urllib.request.urlopen(req)
             soup = Soup(html, features='html.parser')
-        except:
+
+        except Exception as e:
+            app.logger.info(str(e))
             return jsonify({'error': 'Could not retrieve data from investing'}), 400
         for curr_id in retrieve:
             try:
