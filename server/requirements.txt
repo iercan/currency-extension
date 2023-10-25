@@ -12,6 +12,6 @@ packaging==21.3
 pyparsing==3.0.9
 redis==4.5.4
 soupsieve==2.3.2.post1
-Werkzeug==2.3.3
+Werkzeug==3.0.1
 wrapt==1.14.1
 zipp==3.10.0
