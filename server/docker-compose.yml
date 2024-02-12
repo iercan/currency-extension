@@ -5,7 +5,7 @@ volumes:
 
 services:
   redis:
-    image: redis:6.0.9-buster
+    image: redis:7.2.4-bookworm
     restart: unless-stopped
     volumes:
       - redis:/data
@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
   
   nginx:
-    image: nginx:1.22.0
+    image: nginx:1.24.0-bullseye
     restart: unless-stopped
     ports:
       - "80:80"
