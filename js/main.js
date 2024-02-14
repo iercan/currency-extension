@@ -34,5 +34,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+window.addEventListener("load", async () => {
+    await ANL.firePageViewEvent(document.title, document.location.href);
+
+});
 
 

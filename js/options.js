@@ -32,11 +32,13 @@ function save_options() {
         // Update status to let user know options were saved.
 
         status.text('Options saved. Window will be closed.');
+        ANL.fireEvent("option_save");
         setTimeout(function () {
             window.close();
         }, 2000);
 
     });
+
 }
 moveElementToEndOfParent = function(element) {
     let parent = element.parent();
@@ -144,6 +146,10 @@ function restore_options() {
 
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById('save').addEventListener('click', save_options);
+window.addEventListener("load", async () => {
+    await ANL.firePageViewEvent(document.title, document.location.href);
+
+});
 
 
 

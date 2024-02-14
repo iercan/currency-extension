@@ -1,6 +1,4 @@
-/**
- * Created by ibrahim on 22.05.2017.
- */
+importScripts('google-analytics.js');
 
 var url = 'https://www.investingcurrencies.com?pairs=';
 var notification_levels = {};
@@ -44,6 +42,7 @@ function notify(data, selected_currencies, notification_threshold) {
         };
         //console.log(messages);
         chrome.notifications.create(options);
+        ANL.fireEvent("notif_sent");
 
     }
 
@@ -70,6 +69,7 @@ function check_rates() {
                         return;
                     }
                     // The API call was successful!
+                    ANL.fireEvent("check_rates");
                     let data = response.json();
                     data.then(function (result) {
 
