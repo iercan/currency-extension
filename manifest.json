@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
 
-  "name": "investing.com Currencies",
+  "name": "Investing.com Currencies",
   "short_name": "investing.com",
-  "description": "See live currencies by single click and get notification if you want",
-  "version": "3.0",
+  "description": "Access real-time currency rates with a single click and receive notifications if desired.",
+  "version": "3.1",
 
   "content_security_policy": {
     "script-src": "self",
