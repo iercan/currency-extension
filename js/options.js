@@ -140,15 +140,26 @@ function restore_options() {
     });
 }
 
-
-
-
-
-document.addEventListener('DOMContentLoaded', restore_options);
+document.addEventListener('DOMContentLoaded', function (){
+    restore_options();
+    chrome.storage.sync.get({
+        rateUsClicked: false,
+        pageViewCount: 0
+    }, function (items) {
+        document.getElementById("rate-us-text").hidden = items.rateUsClicked || items.pageViewCount % 5 !== 4;
+    });
+});
 document.getElementById('save').addEventListener('click', save_options);
 window.addEventListener("load", async () => {
     await ANL.firePageViewEvent(document.title, document.location.href);
 
+});
+
+document.getElementById('rate-us-link-options').addEventListener('click', function (){
+    chrome.storage.sync.set({
+        rateUsClicked: true
+    });
+    ANL.fireEvent("rate_us_clicked");
 });
 
 
