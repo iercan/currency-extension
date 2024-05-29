@@ -82,7 +82,8 @@ function restore_options() {
         $("#notification_threshold_crypto").val(items.notificationThresholdCrypto);
         let currency_select_elem = $('#currency_select');
         currency_select_elem.select2({
-            placeholder: 'Select currencies'
+            placeholder: 'Select currencies',
+            minimumInputLength: 3
         }).on("select2:select", function (evt) {
             let id = evt.params.data.id;
             console.log(id);
@@ -97,7 +98,7 @@ function restore_options() {
             cursor: "grabbing",
             update: function() {
                 currency_select_elem.parent().find("ul.select2-selection__rendered").children("li[title]").each(function(i, obj){
-                    let element = $("#currency_select").children('option').filter(function () { return $(this).html() == obj.title });
+                    let element = currency_select_elem.children('option').filter(function () { return $(this).html() == obj.title });
                     moveElementToEndOfParent(element)
                 });
                 console.log(""+currency_select_elem.val())
@@ -106,7 +107,8 @@ function restore_options() {
 
         let crypto_currency_select_elem = $('#crypto_currency_select');
         crypto_currency_select_elem.select2({
-            placeholder: 'Select crypto currencies'
+            placeholder: 'Select crypto currencies',
+            minimumInputLength: 3
         }).on("select2:select", function (evt) {
             let id = evt.params.data.id;
             console.log(id);
@@ -121,7 +123,7 @@ function restore_options() {
             cursor: "grabbing",
             update: function() {
                 crypto_currency_select_elem.parent().find("ul.select2-selection__rendered").children("li[title]").each(function(i, obj){
-                    let element = $("#crypto_currency_select").children('option').filter(function () { return $(this).html() == obj.title });
+                    let element = crypto_currency_select_elem.children('option').filter(function () { return $(this).html() == obj.title });
                     moveElementToEndOfParent(element)
                 });
                 console.log(""+crypto_currency_select_elem.val())
