@@ -1,12 +1,61 @@
 import logging
 import redis
 import urllib
+import mysql.connector
 from flask import Flask, request, jsonify
 from bs4 import BeautifulSoup as Soup
 redis_conn = redis.Redis(host='redis', port='6379', db=0)
 app = Flask(__name__)
 TTL = 1800
 CURRENCY_URL = 'https://www.investingwidgets.com/live-currency-cross-rates?pairs={}'
+
+
+def get_db_connection():
+    # Replace these with your actual database connection details
+    db_config = {
+        'user': 'root',
+        'password': 'root',
+        'host': 'mysql',
+        'database': 'investing'
+        }
+    return mysql.connector.connect(**db_config)
+
+
+@app.route('/select2', methods=['POST'])
+def search():
+
+    # Get parameters from the request
+    search_term = request.json.get('search', '')
+    page = int(request.json.get('page', 1))
+    currency_type = request.json.get('type', 'currency')
+
+    page_size = 100
+    offset = (page - 1) * page_size
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    # SQL query for default streams
+    search_sql = "SELECT id, name FROM currencies WHERE name LIKE %s AND type = %s LIMIT %s OFFSET %s"
+    cursor.execute(search_sql, (f"%{search_term}%", currency_type, page_size, offset))
+
+    # Fetch all matching records
+    results = cursor.fetchall()
+
+    # Prepare the response for Select2
+    response = {
+            'results': [{'id': row['id'], 'text': row['name']} for row in results],
+            'pagination': {'more':  page_size == len(results)}
+            }
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
+
+
+    # Return the results as JSON
+    return jsonify(response)
+
 
 @app.route('/')
 def currencies():  # put application's code here
