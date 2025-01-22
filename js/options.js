@@ -61,8 +61,7 @@ function restore_options() {
         console.log(items.selectedCurrencies);
         console.log(items.selectedCryptoCurrencies);
 
-        $('#language').val(items.language).trigger('change');
-        $('#active_tab').val(items.active_tab).trigger('change');
+
         if (items.enableNotification) {
             $("#enable_notification").bootstrapToggle('on');
         } else {
@@ -105,9 +104,9 @@ function restore_options() {
             update: function() {
                 currency_select_elem.parent().find("ul.select2-selection__rendered").children("li[title]").each(function(i, obj){
                     let element = currency_select_elem.children('option').filter(function () { return $(this).html() == obj.title });
-                    moveElementToEndOfParent(element)
+                    moveElementToEndOfParent(element);
                 });
-                console.log(""+currency_select_elem.val())
+                console.log(""+currency_select_elem.val());
             }
         });
 
@@ -146,9 +145,9 @@ function restore_options() {
             update: function() {
                 crypto_currency_select_elem.parent().find("ul.select2-selection__rendered").children("li[title]").each(function(i, obj){
                     let element = crypto_currency_select_elem.children('option').filter(function () { return $(this).html() == obj.title });
-                    moveElementToEndOfParent(element)
+                    moveElementToEndOfParent(element);
                 });
-                console.log(""+crypto_currency_select_elem.val())
+                console.log(""+crypto_currency_select_elem.val());
             }
         });
 
@@ -166,13 +165,13 @@ function restore_options() {
                         const name = result[v].name;
                         // Add the fetched option to the Select2 dropdown
                         let option = new Option(name, v, true, true);
-                        $('#currency_select').append(option).trigger('change');
+                        currency_select_elem.append(option);
                     });
                     items.selectedCryptoCurrencies.forEach(function (v)  {
                         const name = result[v].name;
                         // Add the fetched option to the Select2 dropdown
                         let option = new Option(name, v, true, true);
-                        $('#crypto_currency_select').append(option).trigger('change');
+                        crypto_currency_select_elem.append(option);
                     });
 
 
@@ -183,11 +182,13 @@ function restore_options() {
             console.log('Something went wrong.', err);
         });
 
+        $('#language').val(items.language).trigger('change');
         $('#language').select2({
                 minimumResultsForSearch: -1
             }
         );
 
+        $('#active_tab').val(items.active_tab).trigger('change');
         $('#active_tab').select2({
                 minimumResultsForSearch: -1
             }
