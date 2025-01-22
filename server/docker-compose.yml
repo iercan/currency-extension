@@ -1,25 +1,12 @@
-version: '2.4'
-
-volumes:
-  redis:
+networks:
+  nginx_network:
+    external: true
 
 services:
-  redis:
-    image: redis:7.2.4-bookworm
-    restart: unless-stopped
-    volumes:
-      - redis:/data
-  
   app:
     build:
       context: .
+    container_name: investing_backend
+    networks:
+      - nginx_network
     restart: unless-stopped
-  
-  nginx:
-    image: nginx:1.24.0-bullseye
-    restart: unless-stopped
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./log/:/var/log/nginx
