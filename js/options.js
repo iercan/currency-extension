@@ -40,18 +40,42 @@ function save_options() {
     });
 
 }
-moveElementToEndOfParent = function(element) {
+function moveElementToEndOfParent (element) {
     let parent = element.parent();
     element.detach();
     parent.append(element);
 };
 
-sort_select_box = function (id, values) {
+function sort_select_box (id, values) {
     values.forEach(function (v){
         let element = $("#"+id).children("option[value='"+v+"']");
         moveElementToEndOfParent(element);
     });
 
+};
+
+function fill_currency_box (curreny_id, select_box_id){
+    // Fetch the corresponding text for the stored ID from the server
+    fetch('https://www.investingcurrencies.com/?pairs=' + curreny_id)
+        .then(function (response) {
+            if (response.status !== 200) {
+                console.log('Looks like there was a problem. Status Code: ' + response.status);
+                return;
+            }
+            let data = response.json();
+
+            data.then(function (result) {
+                const key = Object.keys(result)[0];
+                const name = result[key].name;
+                // Add the fetched option to the Select2 dropdown
+                let option = new Option(name, key, true, true);
+                $(select_box_id).append(option).trigger('change');
+            });
+
+        }).catch(function (err) {
+        // There was an error
+        console.log('Something went wrong.', err);
+    });
 }
 
 // Restores select box and checkbox state using the preferences
@@ -66,10 +90,14 @@ function restore_options() {
         language: "www",
         active_tab: "currency"
     }, function (items) {
-        sort_select_box("currency_select", items.selectedCurrencies);
-        $('#currency_select').val(items.selectedCurrencies).trigger('change');
-        sort_select_box("crypto_currency_select", items.selectedCryptoCurrencies);
-        $('#crypto_currency_select').val(items.selectedCryptoCurrencies).trigger('change');
+        console.log(items.selectedCurrencies);
+        console.log(items.selectedCryptoCurrencies);
+        items.selectedCurrencies.forEach(function (v)  {
+            fill_currency_box(v, '#currency_select');
+        });
+        items.selectedCryptoCurrencies.forEach(function (v)  {
+            fill_currency_box(v, '#crypto_currency_select');
+        });
 
         $('#language').val(items.language).trigger('change');
         $('#active_tab').val(items.active_tab).trigger('change');
@@ -83,7 +111,23 @@ function restore_options() {
         let currency_select_elem = $('#currency_select');
         currency_select_elem.select2({
             placeholder: 'Select currencies',
-            minimumInputLength: 3
+            minimumInputLength: 3,
+            ajax: {
+                url: 'https://www.investingcurrencies.com/select2', // Replace with your server endpoint
+                dataType: 'json',
+                contentType: 'application/json',
+                type: 'POST',
+                delay: 250, // Delay in milliseconds to debounce the request
+                data: function (params) {
+                    return JSON.stringify({
+                        search: params.term, // Search term entered by the user
+                        page: params.page || 1, // Current page number
+                        type: 'currency'
+                    });
+                },
+
+                cache: true // Cache the results for better performance
+            }
         }).on("select2:select", function (evt) {
             let id = evt.params.data.id;
             console.log(id);
@@ -108,7 +152,23 @@ function restore_options() {
         let crypto_currency_select_elem = $('#crypto_currency_select');
         crypto_currency_select_elem.select2({
             placeholder: 'Select crypto currencies',
-            minimumInputLength: 3
+            minimumInputLength: 3,
+            ajax: {
+                url: 'https://www.investingcurrencies.com/select2', // Replace with your server endpoint
+                dataType: 'json',
+                contentType: 'application/json',
+                type: 'POST',
+                delay: 250, // Delay in milliseconds to debounce the request
+                data: function (params) {
+                    return JSON.stringify({
+                        search: params.term, // Search term entered by the user
+                        page: params.page || 1, // Current page number
+                        type: 'crypto'
+                    });
+                },
+
+                cache: true // Cache the results for better performance
+            }
         }).on("select2:select", function (evt) {
             let id = evt.params.data.id;
             console.log(id);
@@ -129,6 +189,14 @@ function restore_options() {
                 console.log(""+crypto_currency_select_elem.val())
             }
         });
+
+        //sort filled selected elements
+        setTimeout(() => {
+            sort_select_box("currency_select", items.selectedCurrencies);
+            $('#currency_select').trigger('change');
+            sort_select_box("crypto_currency_select", items.selectedCryptoCurrencies);
+            $('#crypto_currency_select').trigger('change');
+        }, 1000); // 1000 milliseconds = 1 second
 
         $('#language').select2({
                 minimumResultsForSearch: -1

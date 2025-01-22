@@ -1,5 +1,5 @@
-.currency_select{
-    width: 300px;
+.select2-container{
+    width: 175px !important;
 }
 
 li.select2-selection__choice:not(.ui-sortable-helper) {
