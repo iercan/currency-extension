@@ -12,7 +12,7 @@ packaging==21.3
 pyparsing==3.0.9
 redis==4.5.4
 soupsieve==2.3.2.post1
-Werkzeug==3.0.3
+Werkzeug==3.0.6
 wrapt==1.14.1
 zipp==3.19.1
 mysql-connector-python==9.0.0
