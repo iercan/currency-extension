@@ -3,6 +3,18 @@ from bs4 import BeautifulSoup
 
 import mysql.connector
 
+"""
+Download the HTML content from the links below, save them with the specified names, and run this script to insert them into the database.
+Automated downloading is not used because investing.com blocks non-human requests.
+
+Filename: currencies.html
+URL: https://www.investing.com/webmaster-tools/live-currency-cross-rates
+
+Filname: cryptocurrencies.html
+URL: https://www.investing.com/webmaster-tools/crypto-currency-rates
+"""
+
+
 def get_db_connection():
     db_config = {
         'user': 'root',
