@@ -4,7 +4,7 @@
   "name": "Investing.com Currencies",
   "short_name": "investing.com",
   "description": "Access real-time currency rates with a single click and receive notifications if desired.",
-  "version": "3.1",
+  "version": "3.4",
 
   "content_security_policy": {
     "script-src": "self",

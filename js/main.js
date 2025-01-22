@@ -1,4 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('rate-us-link').addEventListener('click', function (){
+        chrome.storage.sync.set({
+            rateUsClicked: true
+        });
+        ANL.fireEvent("rate_us_clicked");
+
+    });
+    chrome.storage.sync.get({
+        rateUsClicked: false,
+        pageViewCount: 0
+    }, function (items) {
+        document.getElementById("rate-us-div").hidden = items.rateUsClicked || items.pageViewCount % 10 !== 9;
+    });
 
     chrome.storage.sync.get({
         selectedCurrencies: ["1", "2", "6"],
@@ -36,7 +49,15 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 window.addEventListener("load", async () => {
     await ANL.firePageViewEvent(document.title, document.location.href);
+    chrome.storage.sync.get({
+        pageViewCount: 0
+    }, function (items) {
+        chrome.storage.sync.set({
+            pageViewCount: items.pageViewCount + 1
+        });
+    });
 
 });
+
 
 
