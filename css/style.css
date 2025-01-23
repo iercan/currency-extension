@@ -6,4 +6,14 @@ li.select2-selection__choice:not(.ui-sortable-helper) {
     cursor: grab !important;
 }
 
+li.select2-selection__choice {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    text-align: center; /* Ensure text is centered */
+    width: 100%; /* Keep the width as specified */
+}
 
+input.form-control {
+    width: 200px !important;
+}
