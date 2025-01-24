@@ -64,7 +64,7 @@ def currencies():  # put application's code here
     if not pairs:
         return jsonify({'error': 'Currency pairs should be provided'}), 400
 
-    retrieve = []
+    retrieve = False
     for curr_id in pairs.split(','):
         try:
             int(curr_id)
@@ -83,11 +83,12 @@ def currencies():  # put application's code here
                 'percentage': percentage
             }
         else:
-            retrieve.append(curr_id)
+            retrieve = True
+            break
 
     if retrieve:
         try:
-            uri = CURRENCY_URL.format(','.join(retrieve))
+            uri = CURRENCY_URL.format(pairs)
             hdr = {'User-Agent': "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"}
             app.logger.info("Sending request to {}".format(uri))
             req = urllib.request.Request(uri, headers=hdr)
@@ -97,7 +98,11 @@ def currencies():  # put application's code here
         except Exception as e:
             app.logger.info(str(e))
             return jsonify({'error': 'Could not retrieve data from investing'}), 400
-        for curr_id in retrieve:
+        for curr_id in pairs.split(','):
+            try:
+                int(curr_id)
+            except ValueError:
+                return jsonify({'error': 'Bad params'}), 400
             try:
                 percentage = float(soup.select('.pid-{}-pcp'.format(curr_id))[0].get_text().replace('%', ''))
                 name = soup.select('#pair_{} .js-col-pair_name a'.format(curr_id))[0].get_text()
