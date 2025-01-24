@@ -1,18 +1,27 @@
 import requests
 from bs4 import BeautifulSoup
+from playwright.sync_api import sync_playwright
 
 import mysql.connector
 
 """
-Download the HTML content from the links below, save them with the specified names, and run this script to insert them into the database.
-Automated downloading is not used because investing.com blocks non-human requests.
-
-Filename: currencies.html
-URL: https://www.investing.com/webmaster-tools/live-currency-cross-rates
-
-Filname: cryptocurrencies.html
-URL: https://www.investing.com/webmaster-tools/crypto-currency-rates
+This script gets active currency list from investing listing
 """
+
+# using playwright because investing.com blocking non-human requests.
+def download_html(url, output_file):
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)  # Use headless mode
+        page = browser.new_page()
+        page.goto(url)  # Navigate to the URL
+        html_content = page.content()  # Get the page HTML content
+
+        # Save the HTML to a file
+        with open(output_file, 'w', encoding='utf-8') as file:
+            file.write(html_content)
+
+        print(f"HTML content saved to {output_file}")
+        browser.close()
 
 
 def get_db_connection():
@@ -77,5 +86,8 @@ def crawl(html_file, currency_type):
     currencies = get_currencies(html_content)
     insert_to_database(currencies, currency_type)
 
-crawl("currencies.html", "currency")
-crawl("cryptocurrencies.html", "crypto")
+download_html("https://www.investing.com/webmaster-tools/crypto-currency-rates", "/tmp/cryptocurrencies.html")
+download_html("https://www.investing.com/webmaster-tools/live-currency-cross-rates", "/tmp/currencies.html")
+
+crawl("/tmp/currencies.html", "currency")
+crawl("/tmp/cryptocurrencies.html", "crypto")
