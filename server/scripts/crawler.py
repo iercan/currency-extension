@@ -36,6 +36,10 @@ def get_currencies(html_content):
         # Find the anchor tags within this section
         currency_name = li.get('title')
         currency_id = li.find('input').get('id')
+
+        if currency_id == "997650" and currency_name == 'ETH/USD': # this is not work
+            continue
+        print(currency_id, currency_name)
         matches.append({'id': currency_id, 'name': currency_name})
 #        print(currency_name, currency_id)
     return matches
