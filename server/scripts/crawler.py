@@ -58,15 +58,12 @@ def insert_to_database(matches, currency_type):
     connection = get_db_connection()
     cursor = connection.cursor()
 
-    delete_query ="""
-    DELETE FROM currencies WHERE type=%s
-    """
-    cursor.execute(delete_query, (currency_type, ))
-
     # Insert data into the database
     insert_query = """
         INSERT INTO currencies (id, name, type)
         VALUES (%s, %s, %s)
+        ON DUPLICATE KEY UPDATE
+        name = VALUES(name)
         """
 
     for currency in matches:
