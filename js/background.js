@@ -52,7 +52,7 @@ function check_rates() {
     chrome.storage.sync.get({
         selectedCurrencies: ["1", "2", "6"],
         selectedCryptoCurrencies: ["945629", "1058142", "1158819"],
-        enableNotification: true,
+        enableNotification: false,
         notificationThreshold: 0.5,
         notificationThresholdCrypto: 5
     }, function (items) {
