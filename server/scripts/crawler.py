@@ -11,8 +11,13 @@ This script gets active currency list from investing listing
 # using playwright because investing.com blocking non-human requests.
 def download_html(url, output_file):
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)  # Use headless mode
+        browser = p.firefox.launch(headless=True)  # Use headless mode
         page = browser.new_page()
+         # Set custom HTTP headers
+        page.set_extra_http_headers({
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
+            "Accept-Language": "en-US,en;q=0.9,tr-TR;q=0.8,tr;q=0.7"
+        })
         page.goto(url)  # Navigate to the URL
         html_content = page.content()  # Get the page HTML content
 
